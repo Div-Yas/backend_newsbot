@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const BACKEND_INGEST_URL = "http://localhost:5000/api/news/ingest";
+const BACKEND_INGEST_URL = `${process.env.BACKEND_URL}api/news/ingest`;
 
 const RSS_FEEDS = [
   "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
