@@ -3,14 +3,19 @@ import { ragQuery } from "../services/ragService.js";
 import { v4 as uuidv4 } from "uuid";
 
 export async function startSession(req, res) {
-  const sessionId = uuidv4();
-  const ttl = Number(process.env.REDIS_TTL_SECONDS || 0);
-  if (ttl > 0) {
-    await redis.set(sessionId, JSON.stringify([]), 'EX', ttl);
-  } else {
-    await redis.set(sessionId, JSON.stringify([]));
+  try {
+    const sessionId = uuidv4();
+    const ttl = Number(process.env.REDIS_TTL_SECONDS || 0);
+    if (ttl > 0) {
+      await redis.set(sessionId, JSON.stringify([]), 'EX', ttl);
+    } else {
+      await redis.set(sessionId, JSON.stringify([]));
+    }
+    res.json({ sessionId });
+  } catch (err) {
+    console.error("❌ Redis error in startSession:", err.message);
+    res.status(500).json({ error: "Failed to create session" });
   }
-  res.json({ sessionId });
 }
 
 export async function sendMessage(req, res) {

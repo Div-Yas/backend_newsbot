@@ -1,10 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { QdrantClient } from "@qdrant/js-client-rest";
 
-const client = new QdrantClient({
-  url: process.env.QDRANT_URL,      // should be cloud URL
+console.log("Qdrant URL:", process.env.QDRANT_URL); // Debug line
+
+const qdrant = new QdrantClient({
+  url: process.env.QDRANT_URL,
   apiKey: process.env.QDRANT_API_KEY,
-  // Important: set checkCompatibility to false to skip version check for cloud
-  checkCompatibility: false
+  checkCompatibility: false,
 });
 
-export default client;
+export default qdrant;
