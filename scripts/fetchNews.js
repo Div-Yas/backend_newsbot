@@ -1,18 +1,17 @@
+// scripts/fetchNews.js
 import axios from "axios";
 import xml2js from "xml2js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const BACKEND_INGEST_URL = `${process.env.BACKEND_URL}api/news/ingest`;
+const BACKEND_INGEST_URL = `${process.env.BACKEND_URL}/api/news/ingest`;
 
 const RSS_FEEDS = [
   "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
   "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
   "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
 ];
-
-
 
 async function parseRSS(url) {
   try {
@@ -48,8 +47,9 @@ async function ingestArticles(articles) {
   }
 }
 
-(async () => {
+// Export a function
+export default async function fetchNews() {
   const articles = await fetchArticles();
   console.log("Fetched articles:", articles.length);
   await ingestArticles(articles);
-})();
+}
