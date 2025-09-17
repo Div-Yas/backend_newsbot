@@ -1,0 +1,33 @@
+# Render blueprint for backend (Node) and Redis
+services:
+  - type: web
+    name: rag-chatbot-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: QDRANT_URL
+        value: https://YOUR-QDRANT-URL
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: QDRANT_COLLECTION
+        value: news_articles
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: rag-chatbot-redis
+          property: connectionString
+      - key: REDIS_TTL_SECONDS
+        value: 3600
+      - key: PORT
+        value: 10000
+  - type: redis
+    name: rag-chatbot-redis
+    plan: free
